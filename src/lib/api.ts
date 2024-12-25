@@ -1,8 +1,12 @@
-export const signInUser = async (email: string, password: string) => {
-  const res = await fetch("/api/auth/sign-in", {
-    method: "POST",
+export const fetchData = async <T>(
+  url: string,
+  method: "GET" | "POST" | "PUT" | "DELETE",
+  body?: object
+): Promise<T> => {
+  const res = await fetch(url, {
+    method,
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
+    body: body ? JSON.stringify(body) : undefined,
   });
 
   if (!res.ok) {
@@ -11,8 +15,22 @@ export const signInUser = async (email: string, password: string) => {
   }
 
   const data = await res.json();
+  return data;
+};
 
-  localStorage.setItem("token", data.token);
+export const signIn = async (email: string, password: string) => {
+  const data = await fetchData<{ token: string; user: any }>(
+    "/api/auth/sign-in",
+    "POST",
+    { email, password }
+  );
+  return data;
+};
 
+export const signOut = async () => {
+  const data = await fetchData<{ message: string }>(
+    "/api/auth/sign-out",
+    "GET"
+  );
   return data;
 };

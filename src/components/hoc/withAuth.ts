@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect } from "react";
 import { useRouter } from "next/router";
+import React, { useEffect } from "react";
 
 export const withAuth = (Component: React.ComponentType) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -11,7 +11,7 @@ export const withAuth = (Component: React.ComponentType) => {
     useEffect(() => {
       const token = localStorage.getItem("token");
       if (!token) {
-        router.push("/login");
+        router.push("/sign-in");
       }
     }, []);
 

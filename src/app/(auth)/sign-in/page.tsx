@@ -1,16 +1,17 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
-import { signInUser } from "@/lib";
-import { User } from "@/types/api";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { Button, Checkbox, Field, Label } from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/16/solid";
+import { yupResolver } from "@hookform/resolvers/yup";
+import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+
+import { signIn } from "@/lib";
+import { User } from "@/types/api";
 
 type SignInForm = Partial<User>;
 
@@ -43,8 +44,7 @@ export default function SignInPage() {
       if (!data?.email || !data?.password) {
         throw new Error("Missing email or password");
       }
-      await signInUser(data?.email, data?.password);
-      alert("SignIn successful!");
+      await signIn(data?.email, data?.password);
 
       router.push("/");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -158,7 +158,10 @@ export default function SignInPage() {
             </div>
 
             <div>
-              <Button className="flex w-full justify-center rounded bg-indigo-600 py-2 px-4 text-sm font-semibold text-white data-[hover]:bg-indigo-500 data-[active]:bg-indigo-700">
+              <Button
+                type="submit"
+                className="flex w-full justify-center rounded bg-indigo-600 py-2 px-4 text-sm font-semibold text-white data-[hover]:bg-indigo-500 data-[active]:bg-indigo-700"
+              >
                 Sign in
               </Button>
             </div>
